@@ -87,7 +87,10 @@ function customerChoice() {
 					// console.log("Good buy!");
 
 					var newQuantity = chosenItem.stock_quantity - answer.pickAQuantity;
-					console.log("newQuantity", newQuantity);
+					// console.log("newQuantity", newQuantity);
+
+					var userTotal = chosenItem.price * answer.pickAnItem;
+					console.log("Your running total is: $", userTotal);
 
 					connection.query(
 						"UPDATE products SET ? WHERE ?",
@@ -107,10 +110,7 @@ function customerChoice() {
 						}
 					);
 				}
-
-
-				// console.log("chosenItem", chosenItem);
-
 			});
+
 	});
 }
