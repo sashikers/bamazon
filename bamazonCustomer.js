@@ -67,7 +67,24 @@ function customerChoice() {
 				}
 			])
 			.then(function(answer) {
-				console.log(answer);
+				console.log("answer", answer);
+				var chosenItem;
+
+				for (var k = 0; k < results.length; k++) {
+					if (results[k].item_id === parseInt(answer.pickAnItem)) {
+						chosenItem = results[k];
+						// console.log("chosenItem", chosenItem);
+					}
+				}
+
+				if (chosenItem.stock_quantity < parseInt(answer.pickAQuantity)) {
+					console.log("Insufficient quantity!! Only " + chosenItem.stock_quantity + " units left!");
+					displayInventory();
+					customerChoice();
+				}
+
+				// console.log("chosenItem", chosenItem);
+
 			});
 	});
 }
