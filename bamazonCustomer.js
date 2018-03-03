@@ -77,6 +77,8 @@ function customerChoice() {
 					}
 				}
 
+				console.log("chosenItem", chosenItem);
+
 				// checks the selected amount against user amt choice
 				if (chosenItem.stock_quantity < parseInt(answer.pickAQuantity)) {
 					console.log("Insufficient quantity!! Only " + chosenItem.stock_quantity + " units of " + chosenItem.product_name + " left!");
@@ -87,26 +89,19 @@ function customerChoice() {
 					// console.log("Good buy!");
 
 					var newQuantity = chosenItem.stock_quantity - answer.pickAQuantity;
-					// console.log("newQuantity", newQuantity);
+					console.log("newQuantity", newQuantity);
 
 					var userTotal = chosenItem.price * answer.pickAnItem;
 					console.log("Your running total is: $", userTotal);
 
 					connection.query(
-						"UPDATE products SET ? WHERE ?",
-						[
-							{
-								stock_quantity: newQuantity
-							},
-							{
-								item_id: chosenItem.id
-							}
-						],   
+						"UPDATE products SET stock_quantity = ? WHERE item_id = ?", [newQuantity, chosenItem.id], 
 						function(error) {
-							if (error) throw err;
+							if (error) throw error;
 							console.log("Good buy!!");
 
 							displayInventory();
+							customerChoice();
 						}
 					);
 				}
