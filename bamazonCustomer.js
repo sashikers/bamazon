@@ -16,6 +16,9 @@ connection.connect(function(err) {
 	customerChoice();
 });
 
+var userTotal = 0;
+console.log("userTotal", userTotal);
+
 // displays the current inventory
 function displayInventory() {
 	// queries the columns to be displayed
@@ -37,6 +40,8 @@ function displayInventory() {
 function customerChoice() {
 	connection.query("SELECT * FROM products", function(err, results) {
 		if (err) throw err;
+
+
 
 		inquirer
 			.prompt([
@@ -91,11 +96,15 @@ function customerChoice() {
 					var newQuantity = chosenItem.stock_quantity - answer.pickAQuantity;
 					console.log("newQuantity", newQuantity);
 
-					var userTotal = chosenItem.price * answer.pickAnItem;
+					console.log("chosenItem.price", chosenItem.price, "answer.pickAQuantity", answer.pickAQuantity);
+
+					userTotal += (chosenItem.price * answer.pickAQuantity);
 					console.log("Your running total is: $", userTotal);
 
+					console.log("chosenItem.id", chosenItem.id);
+
 					connection.query(
-						"UPDATE products SET stock_quantity = ? WHERE item_id = ?", [newQuantity, chosenItem.id], 
+						"UPDATE products SET stock_quantity = ? WHERE item_id = ?", [newQuantity, chosenItem.item_id], 
 						function(error) {
 							if (error) throw error;
 							console.log("Good buy!!");
